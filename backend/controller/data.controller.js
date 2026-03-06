@@ -12,7 +12,7 @@ const getAllUser = async (req, res) => {
         if (error) return res.status(500).json({ error: error.message })
         return res.status(200).json({ data })
     } catch (err) {
-        return res.status(500).json({ message: err.message });
+        return res.status(500).json({ error: err.message });
     }
 }
 
@@ -22,7 +22,7 @@ const getUserById = async (req, res) => {
         if (error) return res.status(500).json({ error: error.message })
         return res.status(200).json({ data })
     } catch (err) {
-        return res.status(500).json({ message: err.message })
+        return res.status(500).json({ error: err.message })
     }
 }
 
@@ -32,7 +32,7 @@ const createUser = async (req, res) => {
         if (error) return res.status(500).json({ error: error.message })
         return res.status(200).json(data)
     } catch (err) {
-        return res.status(500).json({ message: err.message });
+        return res.status(500).json({ error: err.message });
     }
 }
 
@@ -42,10 +42,19 @@ const updateUser = async (req, res) => {
         if (error) return res.status(500).json({ error: error.message })
         return res.status(200).json(data)
     } catch (err) {
-        return res.status(500).json({ message: err.message })
+        return res.status(500).json({ error: err.message })
     }
 }
 
+const deleteUser = async (req, res) => {
+    try {
+        const { data, error } = await supabase.from("users").delete(req.body).eq("id", req.params.id);
+        if (error) return res.status(500).json({ error: error.message })
+        return res.status(200).json(data)
+    } catch (err) {
+        return res.status(500).json({ error: err.message })
+    }
+}
 
 
 module.exports = {
@@ -53,4 +62,5 @@ module.exports = {
     createUser,
     getUserById,
     updateUser,
+    deleteUser,
 }
